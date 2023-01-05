@@ -1,278 +1,299 @@
 #include <iostream>
-#include<cstdlib>
-#include<ctime>
-#include<vector>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
 using namespace std;
+const int N = 10;
+
+class Board
+{
+  private:
+    int table[N][N]={0};
+    bool placedShips[N][N]={false};
+
+  public:
+    bool canIDrowHere(int sizeOfShip,int row,int column)
+    {
+        bool canI = true;
+        for (int x = 0; x < sizeOfShip; x++)
+        {
+            if(placedShips[row][column+x] == true || placedShips[row+x][column] == true || placedShips[row-x][column] == true || placedShips[row][column-x] == true )
+            {
+                canI = false;
+            }
+        }
+        return canI;
+        
+    }
+
+    bool canIDrowRight(int sizeOfShip,int row,int column)
+    {
+        bool canI = true;
+        for (int x = 0; x < sizeOfShip; x++)
+        {
+            if(placedShips[row][column+x] == true)
+            {
+                canI = false;
+            }
+        }
+        return canI;
+    }
+    bool canIDrowLeft(int sizeOfShip,int row,int column)
+    {
+        bool canI = true;
+        for (int x = 0; x < sizeOfShip; x++)
+        {
+            if(placedShips[row][column-x] == true )
+            {
+                canI = false;
+            }
+        }
+        return canI;
+    }
+    bool canIDrowUp(int sizeOfShip,int row,int column)
+    {
+        bool canI = true;
+        for (int x = 0; x < sizeOfShip; x++)
+        {
+            if(placedShips[row-x][column] == true)
+            {
+                canI = false;
+            }
+        }
+        return canI;
+    }
+    bool canIDrowDown(int sizeOfShip,int row,int column)
+    {
+        bool canI = true;
+        for (int x = 0; x < sizeOfShip; x++)
+        {
+            if(placedShips[row+x][column] == true)
+            {
+                canI = false;
+            }
+        }
+        return canI;
+    }
+    void drawShipUp(int mast,int index,vector< int > row,vector< int > column)
+    {
+
+        for (int k=1; k<=mast;k++)
+        {
+            table[row[index]-k+1][column[index]] = 1 ;
+            placedShips[row[index]-k+1][column[index]] = true;
+            placedShips[row[index]-k+1][column[index]+1] = true;
+            placedShips[row[index]-k+1][column[index]-1] = true;
+        }
+        placedShips[row[index]+1][column[index]] = true;
+        placedShips[row[index]+1][column[index]+1] = true;
+        placedShips[row[index]+1][column[index]-1] = true;
+        placedShips[row[index]-mast][column[index]] = true;
+        placedShips[row[index]-mast][column[index]+1] = true;
+        placedShips[row[index]-mast][column[index]-1] = true;
+    }
+
+    void drawShipDown(int mast,int index,vector< int > row,vector< int > column)
+    {
+        for (int k=1; k<=mast;k++)
+        {
+            table[row[index]+k-1][column[index]]=1;
+            placedShips[row[index]+k-1][column[index]] = true;
+            placedShips[row[index]+k-1][column[index]+1] = true;
+            placedShips[row[index]+k-1][column[index]-1] = true;
+        }
+        placedShips[row[index]-1][column[index]] = true;
+        placedShips[row[index]-1][column[index]+1] = true;
+        placedShips[row[index]-1][column[index]-1] = true;
+        placedShips[row[index]+mast][column[index]] = true;
+        placedShips[row[index]+mast][column[index]+1] = true;
+        placedShips[row[index]+mast][column[index]-1] = true;
+    }
+
+    void drawShipRight(int mast,int index,vector< int > row,vector< int > column)
+    {
+        for (int k=1; k<=mast;k++)
+        {
+            table[row[index]][column[index]+k-1]=1;
+            placedShips[row[index]][column[index]+k-1] = true;
+            placedShips[row[index]+1][column[index]+k-1] = true;
+            placedShips[row[index]-1][column[index]+k-1]=  true;
+        }
+        placedShips[row[index]][column[index]-1] = true;
+        placedShips[row[index]+1][column[index]-1] = true;
+        placedShips[row[index]-1][column[index]-1] = true;
+        placedShips[row[index]][column[index]+mast] = true;
+        placedShips[row[index]+1][column[index]+mast] = true;
+        placedShips[row[index]-1][column[index]+mast] = true;
+    }
+
+    void drawShipLeft(int mast,int index,vector< int > row,vector< int > column)
+{
+    for (int k=1; k<=mast;k++)
+    {
+        table[row[index]][column[index]-k+1]=1;
+        placedShips[row[index]][column[index]-k+1] = true;
+        placedShips[row[index]+1][column[index]-k+1] = true;
+        placedShips[row[index]-1][column[index]-k+1] = true;
+    }
+    placedShips[row[index]][column[index]+1] = true;
+    placedShips[row[index]+1][column[index]+1] = true;
+    placedShips[row[index]-1][column[index]+1] = true;
+    placedShips[row[index]][column[index]-mast] = true;
+    placedShips[row[index]+1][column[index]-mast] = true;
+    placedShips[row[index]-1][column[index]-mast] = true;
+}
+
+    void drawBoard()
+    {
+        for(int i=0;i<N;i++)
+	    {
+            for(int j=0;j<N;j++)
+            {
+                cout<<table[i][j]<<" "; 
+            }
+            cout<<endl;
+	    }
+    
+    }
+};
 
 
 int main()
 {
-    int N = 10;
-    int planszaGracza[N-1][N-1]={0};
-    int planszaKomputera[N-1][N-1]={0};
+    Board computerBoard;
+    Board playerBoard;
 
     srand((unsigned) time(NULL));
 
-    vector < int > wiersze;
-    vector < int > kolumny;
+    vector < int > row;
+    vector < int > column;
 
-    for(int i=1; i<N/2; i++)
-    {
-        bool zajetePola[N-1][N-1]={false};	 
-        wiersze.clear();
-        kolumny.clear();
+    for(int i=1; i<N/2; i++) 
+    {	 
+        row.clear();
+        column.clear();
+
         for (int licznik = 0; licznik < i; licznik++)
         {
-            wiersze.push_back( (rand() % 10) );
-            kolumny.push_back( (rand() % 10) );
+            int r,c;
+            do
+            {
+                r = (rand() % 10); 
+                c = (rand() % 10);
+            } while (computerBoard.canIDrowHere(((N/2)-i),r,c) != true);
+          
+                row.push_back(r);
+                column.push_back(c); 
         }
+
          for ( int licznik = 0; licznik < i; licznik++)
          {
-            if(wiersze[licznik]-(N/2-i)<=0)
+            if(column[licznik]<=(N/2-i-1))
+            {
+                if(row[licznik]<=(N/2-i-1))
                 {
-                    if(kolumny[licznik]<=N/2-i)
+                    if( (rand()%2) != 0 )
                     {
-                        if( int j=(rand()%2) != 0)
-                        {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]+k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]-1]=true;
-                        }
-                        else if(j==0)
-                        {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]+k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+(N/2-i)]=true;
-                        }
-                    }
-                    else if (kolumny[licznik]>=N-(N/2-i))
-                    {
-                        if( int j=(rand()%2) != 0)
-                        {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]+k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]-1]=true;
-                        }
-                        else if(j==0)
-                        {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-(N/2-i)]=true;
-                        }
+                        computerBoard.drawShipDown(((N/2)-i),licznik,row,column);
                     }
                     else
                     {
-                        switch (int j=(rand()%3))
-                        {
-                            case 0:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]+k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]-1]=true;
-                            break;
-                            case 1:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]+k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]+k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+(N/2-i)]=true;
-                            break;
-                            case 2:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-(N/2-i)]=true;
-                            break;
-                        }
+                        computerBoard.drawShipRight((N/2-i),licznik,row,column);
                     }
                 }
-            else if (wiersze[licznik]+(N/2-i)>N)
+                else if (row[licznik]>=(N/2+i+1))
                 {
-                    if(kolumny[licznik]<=N/2-i)
+                    if((rand()%2) != 0 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]))
                     {
-                        if( int j=(rand()%2) != 0)
+                        computerBoard.drawShipUp((N/2-i),licznik,row,column);
+                    }
+                    else
+                    {
+                        computerBoard.drawShipRight((N/2-i),licznik,row,column);
+                    }
+                }
+                else
+                {
+                    int count = (rand()%3);
+                    
+                    if(count == 2 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count--;
+                    } 
+                    if(count == 1 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count-- ;
+                    }
+                    if (count == 0 && computerBoard.canIDrowDown(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count = 2;
+                    }
+                    switch (count)
+                    {
+                        
+                        case 0:
+                        computerBoard.drawShipDown((N/2-i),licznik,row,column);
+                        break;
+                        case 1:
+                        computerBoard.drawShipUp((N/2-i),licznik,row,column);
+                        break;
+                        case 2:
+                        computerBoard.drawShipRight((N/2-i),licznik,row,column);
+                        break;
+                    }
+                }
+            }
+            else if (column[licznik]>=(N/2+i+1))
+                {
+                    if(row[licznik]<=(N/2-i-1))
+                    {
+                        if( (rand()%2) != 0)
                         {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]-k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipDown((N/2-i),licznik,row,column);
                         }
-                        else if(j==0)
+                        else
                         {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]+k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]+k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+(N/2-i)]=true;
+                            computerBoard.drawShipLeft((N/2-i),licznik,row,column);
                         }
                     }
-                    else if (kolumny[licznik]>=N-(N/2-i))
+                    else if (row[licznik]>=(N/2+i+1))
                     {
-                        if( int j=(rand()%2) != 0)
+                        if((rand()%2) != 0)
                         {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]-k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipUp((N/2-i),licznik,row,column);
                         }
-                        else if(j==0)
+                        else
                         {
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-(N/2-i)]=true;
+                            computerBoard.drawShipLeft((N/2-i),licznik,row,column);
                         }
                     }
                     else
                     {
-                        switch (int j=(rand()%3))
+                        int count = (rand()%3);
+                    
+                    if(count == 2 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count--;
+                    } 
+                    if(count == 1 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count-- ;
+                    }
+                    if (count == 0 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count = 2;
+                    }
+                        
+                        switch (count)
                         {
                             case 0:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]-k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipUp((N/2-i),licznik,row,column);
                             break;
                             case 1:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]+k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]+k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+(N/2-i)]=true;
+                            computerBoard.drawShipRight((N/2-i),licznik,row,column);
                             break;
                             case 2:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-(N/2-i)]=true;
+                            computerBoard.drawShipLeft((N/2-i),licznik,row,column);
                             break;
                         }
                     }
@@ -280,171 +301,97 @@ int main()
                 }
             else
             {
-                    if(kolumny[licznik]<=N/2-i)
+                    if(row[licznik]<=(N/2-i-1))
                     {
-                        switch (int j=(rand()%3))
+                        int count = (rand()%3);
+                    
+                    if(count == 2 && computerBoard.canIDrowDown(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count--;
+                    } 
+                    if(count == 1 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count-- ;
+                    }
+                    if (count == 0 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count = 2;
+                    }
+                        switch (count)
                         {
                             case 0:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]-k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipLeft((N/2-i),licznik,row,column);
                             break;
                             case 1:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]+k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]+k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+(N/2-i)]=true;
+                            computerBoard.drawShipRight((N/2-i),licznik,row,column);
                             break;
                             case 2:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]+k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipDown((N/2-i),licznik,row,column);
                             break;
                         }
                     }
-                    else if (kolumny[licznik]>=N-(N/2-i))
+                    else if (row[licznik]>=N-((N/2-i)))
                     {
-                        switch (int j=(rand()%3))
+                         int count = (rand()%3);
+                    
+                    if(count == 2 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count--;
+                    } 
+                    if(count == 1 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count-- ;
+                    }
+                    if (count == 0 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count = 2;
+                    }
+                        switch (count)
                         {
                             case 0:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]-k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipUp((N/2-i),licznik,row,column);
                             break;
                             case 1:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-(N/2-i)]=true;
+                            computerBoard.drawShipLeft((N/2-i),licznik,row,column);
                             break;
                             case 2:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]+k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]+k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipRight((N/2-i),licznik,row,column);
                             break;
                         }
                     }
                     else
                     {
-                        switch (int j=(rand()%4))
+                        int count = (rand()%3);
+                    
+                    if(count == 3 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count--;
+                    } 
+                    if(count == 2 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count-- ;
+                    }
+                    if(count == 1 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count--;
+                    }
+                    if(count == 0 && computerBoard.canIDrowDown(N/2+i+1,row[licznik],column[licznik]) == false)
+                    {
+                    count = 3;
+                    }
+                        switch ((rand()%4))
                         {
                             case 0:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]-k][kolumny[licznik]]=1;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]+1]=true;
-                                zajetePola[wiersze[licznik]-k][kolumny[licznik]-1]=true;
-                            }
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipDown((N/2-i),licznik,row,column);
                             break;
                             case 1:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]+k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]+k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]+k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]+(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+(N/2-i)]=true;
+                            computerBoard.drawShipUp((N/2-i),licznik,row,column);
                             break;
                             case 2:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]+1][kolumny[licznik]-(N/2-i)]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-(N/2-i)]=true;
+                            computerBoard.drawShipRight((N/2-i),licznik,row,column);
                             break;
                             case 3:
-                            for (int k=0; k<=(N/2-i);k++)
-                            {
-                                planszaGracza[wiersze[licznik]][kolumny[licznik]-k]=1;
-                                zajetePola[wiersze[licznik]][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]+1][kolumny[licznik]-k]=true;
-                                zajetePola[wiersze[licznik]-1][kolumny[licznik]-k]=true;
-                            }
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]-1][kolumny[licznik]-1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]+1]=true;
-                            zajetePola[wiersze[licznik]+(N/2-i)][kolumny[licznik]-1]=true;
+                            computerBoard.drawShipLeft((N/2-i),licznik,row,column);
                             break;
                         }
                     }
@@ -452,16 +399,6 @@ int main()
             }    
          }
     }
-	for(int i=0;i<N;i++)
-	{
-		for(int j=0;j<N;j++)
-		{
-			cout<<planszaKomputera[i][j]<<" "; 
-		}
-		cout<<endl;
-	}
-    
+    computerBoard.drawBoard();
     return 0;
 }
-
-
