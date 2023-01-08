@@ -17,7 +17,7 @@ class Board
         bool canI = true;
         for (int x = 0; x < sizeOfShip; x++)
         {
-            if(placedShips[row][column+x] == true || placedShips[row+x][column] == true || placedShips[row-x][column] == true || placedShips[row][column-x] == true )
+            if(placedShips[row][column] == true || placedShips[row][column+x] == true || placedShips[row+x][column] == true || placedShips[row-x][column] == true || placedShips[row][column-x] == true )
             {
                 canI = false;
             }
@@ -81,15 +81,39 @@ class Board
         {
             table[row[index]-k+1][column[index]] = 1 ;
             placedShips[row[index]-k+1][column[index]] = true;
-            placedShips[row[index]-k+1][column[index]+1] = true;
-            placedShips[row[index]-k+1][column[index]-1] = true;
+            if(column[index]!=9)
+            {
+                placedShips[row[index]-k+1][column[index]+1] = true;
+            }
+            if(column[index]!=0)
+            {
+                placedShips[row[index]-k+1][column[index]-1] = true;
+            }
         }
+        if(row[index]!=9)
+        {
         placedShips[row[index]+1][column[index]] = true;
-        placedShips[row[index]+1][column[index]+1] = true;
-        placedShips[row[index]+1][column[index]-1] = true;
-        placedShips[row[index]-mast][column[index]] = true;
-        placedShips[row[index]-mast][column[index]+1] = true;
-        placedShips[row[index]-mast][column[index]-1] = true;
+            if(column[index]!=9)
+            {
+                placedShips[row[index]+1][column[index]+1] = true;
+            }
+            if(column[index]!=0)
+            {
+                placedShips[row[index]+1][column[index]-1] = true;
+            }
+        }
+        if(column[index]!=9)
+        {
+            placedShips[row[index]-mast][column[index]] = true;
+            if(column[index]!=9)
+            {
+                placedShips[row[index]-mast][column[index]+1] = true;
+            }
+            if(column[index]!=0)
+            {
+                placedShips[row[index]-mast][column[index]-1] = true;
+            }
+        }
     }
 
     void drawShipDown(int mast,int index,vector< int > row,vector< int > column)
@@ -98,15 +122,33 @@ class Board
         {
             table[row[index]+k-1][column[index]]=1;
             placedShips[row[index]+k-1][column[index]] = true;
-            placedShips[row[index]+k-1][column[index]+1] = true;
-            placedShips[row[index]+k-1][column[index]-1] = true;
+            if(column[index]!=9)
+            {
+                placedShips[row[index]+k-1][column[index]+1] = true;
+            }
+            if(column[index]!=0)
+            {
+                placedShips[row[index]+k-1][column[index]-1] = true;
+            }
         }
-        placedShips[row[index]-1][column[index]] = true;
-        placedShips[row[index]-1][column[index]+1] = true;
-        placedShips[row[index]-1][column[index]-1] = true;
-        placedShips[row[index]+mast][column[index]] = true;
-        placedShips[row[index]+mast][column[index]+1] = true;
-        placedShips[row[index]+mast][column[index]-1] = true;
+        if(row[index]!=0)
+        {
+            placedShips[row[index]-1][column[index]] = true;
+            if(column[index]!=9)
+            {
+                placedShips[row[index]-1][column[index]+1] = true;
+            }
+            if(column[index]!=0)
+            {
+                placedShips[row[index]-1][column[index]-1] = true;
+            }
+        }
+            if(row[index]<=9-mast)
+        {
+            placedShips[row[index]+mast][column[index]] = true;
+            if(column[index]!=9){placedShips[row[index]+mast][column[index]+1] = true;}
+            if(column[index]!=0){placedShips[row[index]+mast][column[index]-1] = true;}
+        }
     }
 
     void drawShipRight(int mast,int index,vector< int > row,vector< int > column)
@@ -115,15 +157,39 @@ class Board
         {
             table[row[index]][column[index]+k-1]=1;
             placedShips[row[index]][column[index]+k-1] = true;
-            placedShips[row[index]+1][column[index]+k-1] = true;
-            placedShips[row[index]-1][column[index]+k-1]=  true;
+            if(row[index]!=9)
+            {
+                placedShips[row[index]+1][column[index]+k-1] = true;
+            }
+            if(row[index]!=0)
+            {
+                placedShips[row[index]-1][column[index]+k-1]=  true;
+            }
         }
-        placedShips[row[index]][column[index]-1] = true;
-        placedShips[row[index]+1][column[index]-1] = true;
-        placedShips[row[index]-1][column[index]-1] = true;
-        placedShips[row[index]][column[index]+mast] = true;
-        placedShips[row[index]+1][column[index]+mast] = true;
-        placedShips[row[index]-1][column[index]+mast] = true;
+        if(column[index]!=0)
+        {
+            placedShips[row[index]][column[index]-1] = true;
+            if(row[index]!=9)
+            {
+                placedShips[row[index]+1][column[index]-1] = true;
+            }
+            if(row[index]!=0)
+            {
+                placedShips[row[index]-1][column[index]-1] = true;
+            }
+        }
+        if(column[index]<9-mast)
+        {
+            placedShips[row[index]][column[index]+mast] = true;
+            if(row[index]!=9)
+            {
+                placedShips[row[index]+1][column[index]+mast] = true;
+            }
+            if(row[index]!=0)
+            {
+                placedShips[row[index]-1][column[index]+mast] = true;
+            }
+        }
     }
 
     void drawShipLeft(int mast,int index,vector< int > row,vector< int > column)
@@ -132,15 +198,33 @@ class Board
     {
         table[row[index]][column[index]-k+1]=1;
         placedShips[row[index]][column[index]-k+1] = true;
-        placedShips[row[index]+1][column[index]-k+1] = true;
-        placedShips[row[index]-1][column[index]-k+1] = true;
+        if(row[index]!=9){placedShips[row[index]+1][column[index]-k+1] = true;}
+        if(row[index]!=0){placedShips[row[index]-1][column[index]-k+1] = true;}
     }
-    placedShips[row[index]][column[index]+1] = true;
-    placedShips[row[index]+1][column[index]+1] = true;
-    placedShips[row[index]-1][column[index]+1] = true;
-    placedShips[row[index]][column[index]-mast] = true;
-    placedShips[row[index]+1][column[index]-mast] = true;
-    placedShips[row[index]-1][column[index]-mast] = true;
+    if(column[index]!=9)
+    {
+        placedShips[row[index]][column[index]+1] = true;
+        if(row[index]!=9)
+        {
+            placedShips[row[index]+1][column[index]+1] = true;
+        }
+        if(row[index]!=0)
+        {
+            placedShips[row[index]-1][column[index]+1] = true;
+        }
+    }
+    if(column[index]>=mast)
+    {
+        placedShips[row[index]][column[index]-mast] = true;
+        if(row[index]!=9)
+        {
+            placedShips[row[index]+1][column[index]-mast] = true;
+        }
+        if(row[index]!=0)
+        {
+            placedShips[row[index]-1][column[index]-mast] = true;
+        }
+    }
 }
 
     void drawBoard()
@@ -176,11 +260,22 @@ int main()
         for (int licznik = 0; licznik < i; licznik++)
         {
             int r,c;
+            if (licznik > 0 )
+            {
+                do
+            {
+                r = (rand() % 10);
+                c = (rand() % 10);
+            } while (computerBoard.canIDrowHere(((N/2)-i),r,c) != true || ((r == row.back()) && (c == column.back())));
+            }
+            else
+            {
             do
             {
                 r = (rand() % 10); 
                 c = (rand() % 10);
-            } while (computerBoard.canIDrowHere(((N/2)-i),r,c) != true);
+            } while (computerBoard.canIDrowHere(((N/2)-i),r,c) != true );
+            }
           
                 row.push_back(r);
                 column.push_back(c); 
@@ -192,9 +287,9 @@ int main()
             {
                 if(row[licznik]<=(N/2-i-1))
                 {
-                    if( (rand()%2) != 0 )
+                    if( (rand()%2) != 0 && computerBoard.canIDrowDown((N/2-i),row[licznik],column[licznik]) == true)
                     {
-                        computerBoard.drawShipDown(((N/2)-i),licznik,row,column);
+                        computerBoard.drawShipDown((N/2-i),licznik,row,column);
                     }
                     else
                     {
@@ -203,7 +298,7 @@ int main()
                 }
                 else if (row[licznik]>=(N/2+i+1))
                 {
-                    if((rand()%2) != 0 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]))
+                    if((rand()%2) != 0 && computerBoard.canIDrowUp((N/2-i),row[licznik],column[licznik]) == true)
                     {
                         computerBoard.drawShipUp((N/2-i),licznik,row,column);
                     }
@@ -216,15 +311,15 @@ int main()
                 {
                     int count = (rand()%3);
                     
-                    if(count == 2 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 2 && computerBoard.canIDrowRight((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count--;
                     } 
-                    if(count == 1 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 1 && computerBoard.canIDrowUp((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count-- ;
                     }
-                    if (count == 0 && computerBoard.canIDrowDown(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if (count == 0 && computerBoard.canIDrowDown((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count = 2;
                     }
@@ -247,7 +342,7 @@ int main()
                 {
                     if(row[licznik]<=(N/2-i-1))
                     {
-                        if( (rand()%2) != 0)
+                        if( (rand()%2) != 0 && computerBoard.canIDrowDown((N/2-i),row[licznik],column[licznik]) == true)
                         {
                             computerBoard.drawShipDown((N/2-i),licznik,row,column);
                         }
@@ -258,7 +353,7 @@ int main()
                     }
                     else if (row[licznik]>=(N/2+i+1))
                     {
-                        if((rand()%2) != 0)
+                        if((rand()%2) != 0 && computerBoard.canIDrowUp((N/2-i),row[licznik],column[licznik]) == true)
                         {
                             computerBoard.drawShipUp((N/2-i),licznik,row,column);
                         }
@@ -271,15 +366,15 @@ int main()
                     {
                         int count = (rand()%3);
                     
-                    if(count == 2 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 2 && computerBoard.canIDrowLeft((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count--;
                     } 
-                    if(count == 1 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 1 && computerBoard.canIDrowDown((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count-- ;
                     }
-                    if (count == 0 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if (count == 0 && computerBoard.canIDrowUp((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count = 2;
                     }
@@ -290,7 +385,7 @@ int main()
                             computerBoard.drawShipUp((N/2-i),licznik,row,column);
                             break;
                             case 1:
-                            computerBoard.drawShipRight((N/2-i),licznik,row,column);
+                            computerBoard.drawShipDown((N/2-i),licznik,row,column);
                             break;
                             case 2:
                             computerBoard.drawShipLeft((N/2-i),licznik,row,column);
@@ -305,15 +400,15 @@ int main()
                     {
                         int count = (rand()%3);
                     
-                    if(count == 2 && computerBoard.canIDrowDown(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 2 && computerBoard.canIDrowDown((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count--;
                     } 
-                    if(count == 1 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 1 && computerBoard.canIDrowRight((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count-- ;
                     }
-                    if (count == 0 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if (count == 0 && computerBoard.canIDrowLeft((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count = 2;
                     }
@@ -334,15 +429,15 @@ int main()
                     {
                          int count = (rand()%3);
                     
-                    if(count == 2 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 2 && computerBoard.canIDrowRight((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count--;
                     } 
-                    if(count == 1 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 1 && computerBoard.canIDrowLeft((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count-- ;
                     }
-                    if (count == 0 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if (count == 0 && computerBoard.canIDrowUp((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count = 2;
                     }
@@ -361,21 +456,21 @@ int main()
                     }
                     else
                     {
-                        int count = (rand()%3);
+                        int count = (rand()%4);
                     
-                    if(count == 3 && computerBoard.canIDrowLeft(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 3 && computerBoard.canIDrowLeft((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count--;
                     } 
-                    if(count == 2 && computerBoard.canIDrowRight(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 2 && computerBoard.canIDrowRight((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count-- ;
                     }
-                    if(count == 1 && computerBoard.canIDrowUp(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 1 && computerBoard.canIDrowUp((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count--;
                     }
-                    if(count == 0 && computerBoard.canIDrowDown(N/2+i+1,row[licznik],column[licznik]) == false)
+                    if(count == 0 && computerBoard.canIDrowDown((N/2-i),row[licznik],column[licznik]) == false)
                     {
                     count = 3;
                     }
