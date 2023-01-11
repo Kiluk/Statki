@@ -11,8 +11,9 @@ class Board
   private:
     int table[N][N]={0};
     bool placedShips[N][N]={false};
-    vector <char> rowShoots;
-    vector <int> columnShoots;
+    int countShots = 0;
+    vector < int > columnShoots;
+    vector < char > rowShoots;
 
     bool canIDrowHere(int sizeOfShip,int row,int column)
     {
@@ -230,7 +231,6 @@ class Board
 }
   
   public:
-    int countShots = 0;
     void drawBoard()
     {
         for(int i=0;i<N;i++)
@@ -247,221 +247,224 @@ class Board
     void createRandomBoard ()
     {
         for(int i=1; i<N/2; i++)
-        {	 
-            int row , column;
-            do
+        {
+            for (int index = 0; index < i; index++)
             {
-                row = (rand() % 10); 
-                column = (rand() % 10);
-            } while (canIDrowHere(((N/2)-i),row,column) != true );
-        
-            if(column <=(N/2-i-1))
-            {
-                if(row<=(N/2-i-1))
+                int row , column;
+                do
                 {
-                    if( (rand()%2) != 0 && canIDrowDown((N/2-i),row,column) == true)
+                    row = (rand() % 10); 
+                    column = (rand() % 10);
+                } while (canIDrowHere(((N/2)-i),row,column) != true );
+            
+                if(column <=(N/2-i-1))
+                {
+                    if(row<=(N/2-i-1))
                     {
-                        drawShipDown((N/2-i),row,column);
+                        if( (rand()%2) != 0 && canIDrowDown((N/2-i),row,column) == true)
+                        {
+                            drawShipDown((N/2-i),row,column);
+                        }
+                        else
+                        {
+                            drawShipRight((N/2-i),row,column);
+                        }
+                    }
+                    else if (row>=(N/2+i+1))
+                    {
+                        if((rand()%2) != 0 && canIDrowUp((N/2-i),row,column) == true)
+                        {
+                            drawShipUp((N/2-i),row,column);
+                        }
+                        else
+                        {
+                            drawShipRight((N/2-i),row,column);
+                        }
                     }
                     else
                     {
-                        drawShipRight((N/2-i),row,column);
-                    }
-                }
-                else if (row>=(N/2+i+1))
-                {
-                    if((rand()%2) != 0 && canIDrowUp((N/2-i),row,column) == true)
-                    {
-                        drawShipUp((N/2-i),row,column);
-                    }
-                    else
-                    {
-                        drawShipRight((N/2-i),row,column);
-                    }
-                }
-                else
-                {
-                    int count = (rand()%3);
-                    
-                    if(count == 2 && canIDrowRight((N/2-i),row,column) == false)
-                    {
-                        count--;
-                    } 
-                    if(count == 1 && canIDrowUp((N/2-i),row,column) == false)
-                    {
-                        count-- ;
-                    }
-                    if (count == 0 && canIDrowDown((N/2-i),row,column) == false)
-                    {
-                        count = 2;
-                    }
-                    switch (count)
-                    {
+                        int count = (rand()%3);
                         
-                        case 0:
-                        drawShipDown((N/2-i),row,column);
-                        break;
-                        case 1:
-                        drawShipUp((N/2-i),row,column);
-                        break;
-                        case 2:
-                        drawShipRight((N/2-i),row,column);
-                        break;
+                        if(count == 2 && canIDrowRight((N/2-i),row,column) == false)
+                        {
+                            count--;
+                        } 
+                        if(count == 1 && canIDrowUp((N/2-i),row,column) == false)
+                        {
+                            count-- ;
+                        }
+                        if (count == 0 && canIDrowDown((N/2-i),row,column) == false)
+                        {
+                            count = 2;
+                        }
+                        switch (count)
+                        {
+                            
+                            case 0:
+                            drawShipDown((N/2-i),row,column);
+                            break;
+                            case 1:
+                            drawShipUp((N/2-i),row,column);
+                            break;
+                            case 2:
+                            drawShipRight((N/2-i),row,column);
+                            break;
+                        }
                     }
                 }
-            }
-            else if (column>=(N/2+i+1))
-            {
-                if(row<=(N/2-i-1))
+                else if (column>=(N/2+i+1))
                 {
-                    if( (rand()%2) != 0 && canIDrowDown((N/2-i),row,column) == true)
+                    if(row<=(N/2-i-1))
                     {
-                        drawShipDown((N/2-i),row,column);
+                        if( (rand()%2) != 0 && canIDrowDown((N/2-i),row,column) == true)
+                        {
+                            drawShipDown((N/2-i),row,column);
+                        }
+                        else
+                        {
+                            drawShipLeft((N/2-i),row,column);
+                        }
+                    }
+                    else if (row>=(N/2+i+1))
+                    {
+                        if((rand()%2) != 0 && canIDrowUp((N/2-i),row,column) == true)
+                        {
+                            drawShipUp((N/2-i),row,column);
+                        }
+                        else
+                        {
+                            drawShipLeft((N/2-i),row,column);
+                        }
                     }
                     else
                     {
-                        drawShipLeft((N/2-i),row,column);
+                        int count = (rand()%3);
+                        if(count == 2 && canIDrowLeft((N/2-i),row,column) == false)
+                        {
+                            count--;
+                        } 
+                        if(count == 1 && canIDrowDown((N/2-i),row,column) == false)
+                        {
+                            count-- ;
+                        }
+                        if (count == 0 && canIDrowUp((N/2-i),row,column) == false)
+                        {
+                            count = 2;
+                        }
+                            
+                        switch (count)
+                        {
+                            case 0:
+                            drawShipUp((N/2-i),row,column);
+                            break;
+                            case 1:
+                            drawShipDown((N/2-i),row,column);
+                            break;
+                            case 2:
+                            drawShipLeft((N/2-i),row,column);
+                            break;
+                        }
                     }
-                }
-                else if (row>=(N/2+i+1))
-                {
-                    if((rand()%2) != 0 && canIDrowUp((N/2-i),row,column) == true)
-                    {
-                        drawShipUp((N/2-i),row,column);
-                    }
-                    else
-                    {
-                        drawShipLeft((N/2-i),row,column);
-                    }
-                }
-                else
-                {
-                    int count = (rand()%3);
-                    if(count == 2 && canIDrowLeft((N/2-i),row,column) == false)
-                    {
-                        count--;
-                    } 
-                    if(count == 1 && canIDrowDown((N/2-i),row,column) == false)
-                    {
-                        count-- ;
-                    }
-                    if (count == 0 && canIDrowUp((N/2-i),row,column) == false)
-                    {
-                        count = 2;
-                    }
-                        
-                    switch (count)
-                    {
-                        case 0:
-                        drawShipUp((N/2-i),row,column);
-                        break;
-                        case 1:
-                        drawShipDown((N/2-i),row,column);
-                        break;
-                        case 2:
-                        drawShipLeft((N/2-i),row,column);
-                        break;
-                    }
-                }
-                
-            }
-            else
-            {
-                if(row<=(N/2-i-1))
-                {
-                    int count = (rand()%3);
-                
-                    if(count == 2 && canIDrowDown((N/2-i),row,column) == false)
-                    {
-                        count--;
-                    } 
-                    if(count == 1 && canIDrowRight((N/2-i),row,column) == false)
-                    {
-                        count-- ;
-                    }
-                    if (count == 0 && canIDrowLeft((N/2-i),row,column) == false)
-                    {
-                        count = 2;
-                    }
-                    switch (count)
-                    {
-                        case 0:
-                        drawShipLeft((N/2-i),row,column);
-                        break;
-                        case 1:
-                        drawShipRight((N/2-i),row,column);
-                        break;
-                        case 2:
-                        drawShipDown((N/2-i),row,column);
-                        break;
-                    }
-                }
-                else if (row>=N-((N/2-i)))
-                {
-                    int count = (rand()%3);
                     
-                    if(count == 2 && canIDrowRight((N/2-i),row,column) == false)
-                    {
-                        count--;
-                    } 
-                    if(count == 1 && canIDrowLeft((N/2-i),row,column) == false)
-                    {
-                        count-- ;
-                    }
-                    if (count == 0 && canIDrowUp((N/2-i),row,column) == false)
-                    {
-                        count = 2;
-                    }
-                    switch (count)
-                    {
-                        case 0:
-                        drawShipUp((N/2-i),row,column);
-                        break;
-                        case 1:
-                        drawShipLeft((N/2-i),row,column);
-                        break;
-                        case 2:
-                        drawShipRight((N/2-i),row,column);
-                        break;
-                    }
                 }
                 else
                 {
-                    int count = (rand()%4);
-                
-                    if(count == 3 && canIDrowLeft((N/2-i),row,column) == false)
+                    if(row<=(N/2-i-1))
                     {
-                        count--;
-                    } 
-                    if(count == 2 && canIDrowRight((N/2-i),row,column) == false)
-                    {
-                        count-- ;
+                        int count = (rand()%3);
+                    
+                        if(count == 2 && canIDrowDown((N/2-i),row,column) == false)
+                        {
+                            count--;
+                        } 
+                        if(count == 1 && canIDrowRight((N/2-i),row,column) == false)
+                        {
+                            count-- ;
+                        }
+                        if (count == 0 && canIDrowLeft((N/2-i),row,column) == false)
+                        {
+                            count = 2;
+                        }
+                        switch (count)
+                        {
+                            case 0:
+                            drawShipLeft((N/2-i),row,column);
+                            break;
+                            case 1:
+                            drawShipRight((N/2-i),row,column);
+                            break;
+                            case 2:
+                            drawShipDown((N/2-i),row,column);
+                            break;
+                        }
                     }
-                    if(count == 1 && canIDrowUp((N/2-i),row,column) == false)
+                    else if (row>=N-((N/2-i)))
                     {
-                        count--;
+                        int count = (rand()%3);
+                        
+                        if(count == 2 && canIDrowRight((N/2-i),row,column) == false)
+                        {
+                            count--;
+                        } 
+                        if(count == 1 && canIDrowLeft((N/2-i),row,column) == false)
+                        {
+                            count-- ;
+                        }
+                        if (count == 0 && canIDrowUp((N/2-i),row,column) == false)
+                        {
+                            count = 2;
+                        }
+                        switch (count)
+                        {
+                            case 0:
+                            drawShipUp((N/2-i),row,column);
+                            break;
+                            case 1:
+                            drawShipLeft((N/2-i),row,column);
+                            break;
+                            case 2:
+                            drawShipRight((N/2-i),row,column);
+                            break;
+                        }
                     }
-                    if(count == 0 && canIDrowDown((N/2-i),row,column) == false)
+                    else
                     {
-                        count = 3;
+                        int count = (rand()%4);
+                    
+                        if(count == 3 && canIDrowLeft((N/2-i),row,column) == false)
+                        {
+                            count--;
+                        } 
+                        if(count == 2 && canIDrowRight((N/2-i),row,column) == false)
+                        {
+                            count-- ;
+                        }
+                        if(count == 1 && canIDrowUp((N/2-i),row,column) == false)
+                        {
+                            count--;
+                        }
+                        if(count == 0 && canIDrowDown((N/2-i),row,column) == false)
+                        {
+                            count = 3;
+                        }
+                        switch ((rand()%4))
+                        {
+                            case 0:
+                            drawShipDown((N/2-i),row,column);
+                            break;
+                            case 1:
+                            drawShipUp((N/2-i),row,column);
+                            break;
+                            case 2:
+                            drawShipRight((N/2-i),row,column);
+                            break;
+                            case 3:
+                            drawShipLeft((N/2-i),row,column);
+                            break;
+                        }
                     }
-                    switch ((rand()%4))
-                    {
-                        case 0:
-                        drawShipDown((N/2-i),row,column);
-                        break;
-                        case 1:
-                        drawShipUp((N/2-i),row,column);
-                        break;
-                        case 2:
-                        drawShipRight((N/2-i),row,column);
-                        break;
-                        case 3:
-                        drawShipLeft((N/2-i),row,column);
-                        break;
-                    }
-                }
-            }    
+                }  
+            }  
         }
     }
 
@@ -499,11 +502,12 @@ class Board
         {
             for (int c = 0; c < 10; c++)
             {
-                count =+ table[r][c]; 
+                count = count + table[r][c]; 
             }
         }
         return count;
     }
+
     void shoot()
     {   
         char shootRow;
@@ -511,15 +515,22 @@ class Board
         cout << "Please enter data in form of 'A2' ";
         cin >> shootRow;
         cin >> shootColumn;
-        if(table[shootRow-65][shootColumn] == 0)
+        if(table[shootRow-65][shootColumn-1] == 0)
         {
             cout << "You missed"<< endl;
         }
-        else if(table[shootRow-65][shootColumn] == 1)
+        else if(table[shootRow-65][shootColumn-1] == 1)
         {
             cout << "You hit";
-            if ((table[shootRow-65+1][shootColumn]+table[shootRow-65][shootColumn+1]+table[shootRow-65-1][shootColumn]+table[shootRow-65][shootColumn-1]+table[shootRow-65+1][shootColumn+1]+table[shootRow-65-1][shootColumn-1]+table[shootRow-65+1][shootColumn-1]+table[shootRow-65-1][shootColumn+1])%2==0)
+            if (table[shootRow-65+1][shootColumn-1] == 1 || table[shootRow-65-1][shootColumn-1] == 1 || table[shootRow-65][shootColumn-1+1] == 1 || table[shootRow-65][shootColumn-1-1] == 1)
             {
+                table[shootRow-65][shootColumn-1] = 2;
+                cout << " still floats"<< endl;
+                shoot();
+            }
+            else
+            {
+                table[shootRow-65][shootColumn-1] = 2;
                 cout << " and sunk" << endl;
                 if(tableValue()<40)
                 {
@@ -530,12 +541,7 @@ class Board
                     cout << "You won" ;
                 }
             }
-            else
-            {
-                cout << " still floats"<< endl;
-                shoot();
-            }
-            table[shootRow-65][shootColumn] = 2; 
+             
         }
         else
         {
@@ -546,25 +552,21 @@ class Board
     void randomShoot()
     {   
         countShots++;
-        int r;
-        int c;
-        for (int i = 0; i < countShots; i++)
+        char r = rand()%10;
+        int c = rand()%10;
+        for (int i = 1; i < countShots; i++)
         {   
-            if (countShots > 1)
+            while(countShots > 1 && rowShoots[i] == r && columnShoots[i] == c)
             {
-                do
-                {
-                    r = rand()%10;
-                    c = rand()%10;
-                } while (rowShoots[i] == r && columnShoots[i] == c );
+                r = rand()%10;
+                c = rand()%10;
             }
         }
-        
-        char randomShootRow = rand()%10 + 65;
-        int randomShootColumn = rand()%10;
-        cout << randomShootRow << randomShootColumn << endl ; 
-        rowShoots.push_back(randomShootRow);
-        columnShoots.push_back(randomShootColumn);
+        rowShoots.push_back(r);
+        columnShoots.push_back(c);
+        char randomShootRow = r + 65;
+        int randomShootColumn = c;
+        cout << randomShootRow << randomShootColumn+1 << endl ;
         if(table[randomShootRow-65][randomShootColumn] == 0)
         {
             cout << "Missed" << endl; 
@@ -587,7 +589,6 @@ class Board
         }
     }
 };
-
 
 int main()
 {
@@ -613,12 +614,12 @@ int main()
         playerBoard.drawBoard();
     }
     
-    cout << "Let's start the game"<<endl<<"You shot first"<< endl;
-    while (playerBoard.tableValue()<40 || computerBoard.tableValue()<40)
-    {
-        computerBoard.shoot();
-        playerBoard.randomShoot();
-    }
-    
+    cout << "Let's start the game"<<endl<<"You shot first"<< endl; 
+    while (playerBoard.tableValue()<40 & computerBoard.tableValue()<40)
+        {
+           computerBoard.shoot();
+           playerBoard.randomShoot();
+        }
+        
     return 0;
 }
