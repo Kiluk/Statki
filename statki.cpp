@@ -560,6 +560,7 @@ class Board
             {
                 r = rand()%10;
                 c = rand()%10;
+                i = 1;
             }
         }
         rowShoots.push_back(r);
